@@ -40,8 +40,8 @@ userSchema.pre("save" , async function(next){
     // save password value to hash
     this.password = hash 
 
-    // return to next
-    return next;
+    // return 
+    return 
 })
 
 // to compare passwords
@@ -50,7 +50,7 @@ userSchema.methods.comparePassword = async function (password){
 }
 
 // userModel
-const userModel = mongoose.model("user" , userShema)
+const userModel = mongoose.model("user" , userSchema)
 
 export default userModel;
 
