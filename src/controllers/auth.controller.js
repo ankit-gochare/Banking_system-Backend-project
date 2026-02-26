@@ -1,5 +1,6 @@
 import userModel from '../models/user.model.js'
 import jwt from 'jsonwebtoken'
+import { sendRegistrationEmail } from '../services/email.service.js';
 
 /**
 * - user regsiter controller
@@ -43,6 +44,10 @@ export async function registerUserController(req,res){
         },
         token
     })
+
+
+    // send registrationEmail
+    await sendRegistrationEmail(user.email , user.name)
 }
 
 
