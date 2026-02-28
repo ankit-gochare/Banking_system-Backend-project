@@ -1,5 +1,6 @@
 import userModel from "../models/user.model.js"
 import jwt, { decode } from 'jsonwebtoken'
+import tokenBlackListModel from "../models/blackList.model.js"
 
 export async function authMiddleware(req,res,next){
     // check if token is present 
@@ -9,12 +10,21 @@ export async function authMiddleware(req,res,next){
     // if token not present 
     // means the user is not logged in, return
     if(!token){
-        return res.status(401).jso({
+        return res.status(401).json({
             message:"Unauthorized accessed , token is missing"
         })
     }
 
-    // if token is present then where token 
+    // chcek if the token is blacklisted or not 
+    const isBlacklisted = await tokenBlackListModel.findOne({ token })
+
+    if (isBlacklisted) {
+        return res.status(401).json({
+            message: "Unauthorized access, token is invalid"
+        })
+    }
+
+    // check if token is coreect or not  
     try{
         const decoded = jwt.verify(token , process.env.JWT_SECRET)
         // if token gets verified then we have user ki id in decoded
@@ -48,15 +58,15 @@ export async function authSystemUserMiddleware(req,res,next){
     }
 
     // chcek if the token is blacklisted or not 
-    // const isBlacklisted = await tokenBlackListModel.findOne({ token })
+    const isBlacklisted = await tokenBlackListModel.findOne({ token })
 
-    // if (isBlacklisted) {
-    //     return res.status(401).json({
-    //         message: "Unauthorized access, token is invalid"
-    //     })
-    // }
+    if (isBlacklisted) {
+        return res.status(401).json({
+            message: "Unauthorized access, token is invalid"
+        })
+    }
 
-    // if token exists // chcek if the token is correct or not
+    // chcek if the token is correct or not
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
