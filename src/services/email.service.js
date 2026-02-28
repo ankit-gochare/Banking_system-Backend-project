@@ -51,8 +51,31 @@ export async function sendRegistrationEmail(userEmail , name){
     const subject = "Welcome to All_yours Backend Ledger !"
     const text = `Hello ${name},\n\nThank you for registering at Backend Ledger, we are excited to have you on board!\n\nBest regards,\nThe All yours Backend Ledger Team`;
 
-    const html =`<p>Hello ${name},</p><p>Thank you registering at Backend Ledger. We are excited to have you on board!</p><p>Best regargds,<br>The All_yours Backedn Ledger Team</p>`;
+    const html =`<p>Hello ${name},</p><p>Thank you registering at Backend Ledger. We are excited to have you on board!</p><p>Best regargds,<br>The All_yours Backend Ledger Team</p>`;
 
     await sendEmail(userEmail, subject , text , html);
 }
 
+// transaction successful email
+export async function sendTransactionEmail(userEmail , name , amount , toAccount){
+  const subject = "Transaction successful";
+
+  const text = `Hello ${name},\n\nYour transaction of$${amount} to account ${toAccount} was successful.\n\nBest regards,\nThe All yours Backend Ledger Team`;
+
+  const html = `<p>Hello ${name},</p><p>Your transaction of $${amount} to account ${toAccount} was successful.</p><p>Best regargds,<br>The All_yours Backend Ledger Team</p>`
+
+  await sendEmail(userEmail , subject , text , html);
+
+}
+
+// tgransaction failure email
+export async function sendTransactionFailureEmail(userEmail , name , amount , toAccount){
+  const subject = "Transaction Failed";
+
+  const text = `Hello ${name},\n\nWe regret to inform you that your transaction of $${amount} to account ${toAccount} has failed. Please try again later\n\nBest regards,\nThe All yours Backend Ledger Team`;
+
+  const html = `<p>Hello ${name},</p><p>We regret to inform you that your transaction of $${amount} to account ${toAccount} has Failed. please try again later.</p><p>Best regargds,<br>The All_yours Backend Ledger Team</p>`
+
+  await sendEmail(userEmail , subject , text , html);
+
+}
